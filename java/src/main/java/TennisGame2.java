@@ -1,11 +1,8 @@
 
-public class TennisGame2 implements ITennisGame
-{
-    public int P1point = 0;
-    public int P2point = 0;
-    
-    public String P1res = "";
-    public String P2res = "";
+public class TennisGame2 implements ITennisGame {
+    public int player1Points = 0;
+    public int player2Points = 0;
+
     private String player1Name;
     private String player2Name;
 
@@ -14,120 +11,84 @@ public class TennisGame2 implements ITennisGame
         this.player2Name = player2Name;
     }
 
-    public String getScore(){
-        String score = "";
-        if (P1point == P2point && P1point < 4)
-        {
-            if (P1point==0)
-                score = "Love";
-            if (P1point==1)
-                score = "Fifteen";
-            if (P1point==2)
-                score = "Thirty";
-            score += "-All";
+    public String getScore() {
+        if (wonByPlayer(player1Points,player2Points)) {
+            return "Win for player1";
         }
-        if (P1point==P2point && P1point>=3)
-            score = "Deuce";
-        
-        if (P1point > 0 && P2point==0)
-        {
-            if (P1point==1)
-                P1res = "Fifteen";
-            if (P1point==2)
-                P1res = "Thirty";
-            if (P1point==3)
-                P1res = "Forty";
-            
-            P2res = "Love";
-            score = P1res + "-" + P2res;
+        if (wonByPlayer(player2Points,player1Points)) {
+            return "Win for player2";
         }
-        if (P2point > 0 && P1point==0)
-        {
-            if (P2point==1)
-                P2res = "Fifteen";
-            if (P2point==2)
-                P2res = "Thirty";
-            if (P2point==3)
-                P2res = "Forty";
-            
-            P1res = "Love";
-            score = P1res + "-" + P2res;
+        if (player1Points > player2Points && player2Points >= 3) {
+            return "Advantage player1";
         }
-        
-        if (P1point>P2point && P1point < 4)
-        {
-            if (P1point==2)
-                P1res="Thirty";
-            if (P1point==3)
-                P1res="Forty";
-            if (P2point==1)
-                P2res="Fifteen";
-            if (P2point==2)
-                P2res="Thirty";
-            score = P1res + "-" + P2res;
+        if (player2Points > player1Points && player1Points >= 3) {
+            return "Advantage player2";
         }
-        if (P2point>P1point && P2point < 4)
-        {
-            if (P2point==2)
-                P2res="Thirty";
-            if (P2point==3)
-                P2res="Forty";
-            if (P1point==1)
-                P1res="Fifteen";
-            if (P1point==2)
-                P1res="Thirty";
-            score = P1res + "-" + P2res;
+        if (isScoreTheSameAndSmallerThan3()) {
+            return mapPointsToScore(player1Points) + "-All";
         }
-        
-        if (P1point > P2point && P2point >= 3)
-        {
-            score = "Advantage player1";
+        if (isDeuce()) {
+            return "Deuce";
         }
-        
-        if (P2point > P1point && P1point >= 3)
-        {
-            score = "Advantage player2";
-        }
-        
-        if (P1point>=4 && P2point>=0 && (P1point-P2point)>=2)
-        {
-            score = "Win for player1";
-        }
-        if (P2point>=4 && P1point>=0 && (P2point-P1point)>=2)
-        {
-            score = "Win for player2";
-        }
-        return score;
+        return mapPointsToScore(player1Points) + "-" + mapPointsToScore(player2Points);
     }
-    
-    public void SetP1Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
+
+    private boolean wonByPlayer(int p1, int p2) {
+        return p1 >= 4 && p1 >= p2 + 2;
+    }
+
+    private static String mapPointsToScore(int points) {
+        switch (points) {
+            case 0 -> {
+                return "Love";
+            }
+            case 1 -> {
+                return "Fifteen";
+            }
+            case 2 -> {
+                return "Thirty";
+            }
+            case 3 -> {
+                return "Forty";
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + points);
+        }
+    }
+
+    private boolean isDeuce() {
+        return player1Points == player2Points && player1Points >= 3;
+    }
+
+    private boolean isScoreTheSameAndSmallerThan3() {
+        return player1Points == player2Points && player1Points < 3;
+    }
+
+    public void SetP1Score(int number) {
+
+        for (int i = 0; i < number; i++) {
             P1Score();
         }
-            
+
     }
-    
-    public void SetP2Score(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
+
+    public void SetP2Score(int number) {
+
+        for (int i = 0; i < number; i++) {
             P2Score();
         }
-            
+
     }
-    
-    public void P1Score(){
-        P1point++;
+
+    public void P1Score() {
+        player1Points++;
     }
-    
-    public void P2Score(){
-        P2point++;
+
+    public void P2Score() {
+        player2Points++;
     }
 
     public void wonPoint(String player) {
-        if (player == "player1")
+        if (player.equals( player1Name))
             P1Score();
         else
             P2Score();
