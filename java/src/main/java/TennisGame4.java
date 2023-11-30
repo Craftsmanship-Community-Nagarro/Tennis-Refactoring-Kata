@@ -1,4 +1,4 @@
-public class TennisGame4 implements TennisGame {
+public class TennisGame4 implements ITennisGame {
 
     int serverScore;
     int receiverScore;

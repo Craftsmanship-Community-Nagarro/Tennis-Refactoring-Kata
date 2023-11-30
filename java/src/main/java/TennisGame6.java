@@ -1,4 +1,4 @@
-public class TennisGame6 implements TennisGame {
+public class TennisGame6 implements ITennisGame {
     private final String player1Name;
     private final String player2Name;
     private int player1Score;

@@ -1,7 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class TennisGame5 implements TennisGame {
+public class TennisGame5 implements ITennisGame {
 
     private final String player1Name;
     private final String player2Name;

@@ -1,5 +1,5 @@
 
-public class TennisGame3 implements TennisGame {
+public class TennisGame3 implements ITennisGame {
     
     private int p2;
     private int p1;
